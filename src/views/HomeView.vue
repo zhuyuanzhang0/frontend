@@ -1,18 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <product style="padding:20px"></product>
+
+    <div style="flex:1;margin-top:10vh;gap:10vh;display:flex;flex-direction:column;">
+        <search></search>
+        <icons></icons>
+    </div>
+
+    <clock></clock>
+
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import search from "@/components/start/search.vue";
+import icons from "@/components/start/icons.vue";
+import product from "@/components/product/index.vue";
+import clock from "@/components/clock/index.vue";
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
-    HelloWorld
-  }
-}
+    search,
+    icons,
+    product,
+    clock,
+  },
+};
 </script>
+
+<style lang="less" scoped>
+
+.home{
+  display: flex;
+}
+
+</style>
