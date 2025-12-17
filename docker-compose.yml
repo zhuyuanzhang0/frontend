@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  front-web:
+    image: front-web:latest
+    container_name: front-web
+    ports:
+      - "8005:80"
+    restart: always
