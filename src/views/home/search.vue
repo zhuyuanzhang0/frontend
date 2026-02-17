@@ -1,9 +1,32 @@
+<script setup>
+import { ref } from 'vue'
+const nginx = ref('google')
+const text = ref('')
+function search() {
+  let query = encodeURIComponent(text.value.trim())
+  if (!query) return
+  let url = ''
+  switch (nginx.value) {
+    case 'google':
+      url = `https://www.google.com/search?q=${query}`
+      break
+    case 'bing':
+      url = `https://www.bing.com/search?q=${query}`
+      break
+    case 'baidu':
+      url = `https://www.baidu.com/s?wd=${query}`
+      break
+  }
+  window.location.href = url
+}
+</script>
+
 <template>
-  <div id="search-bar" class="drop">
+  <div id="search-bar" class="liquid-bg" style="background: hsla(0, 0%, 100%, 0.5); padding: 0">
     <select id="search-engine" v-model="nginx">
-      <option value="google">Google</option>
-      <option value="bing">Bing</option>
-      <option value="baidu">百度</option>
+      <option value="google" class="search-option">Google</option>
+      <option value="bing" class="search-option">Bing</option>
+      <option value="baidu" class="search-option">百度</option>
     </select>
     <input
       id="search-text"
@@ -37,67 +60,21 @@
     </button>
   </div>
 </template>
-
-<script>
-export default {
-  name: "SearchBar",
-  data() {
-    return {
-      nginx: "google",
-      text: "",
-    };
-  },
-  methods: {
-    search() {
-      let query = encodeURIComponent(this.text.trim());
-      if (!query) return;
-      let url = "";
-      switch (this.nginx) {
-        case "google":
-          url = `https://www.google.com/search?q=${query}`;
-          break;
-        case "bing":
-          url = `https://www.bing.com/search?q=${query}`;
-          break;
-        case "baidu":
-          url = `https://www.baidu.com/s?wd=${query}`;
-          break;
-      }
-      window.location.href = url;
-    },
-  },
-};
-</script>
-
-<style lang="less" scoped>
-#search {
-  box-shadow: 0px 2px 8px 0px rgba(60, 64, 67, 0.25);
-  border-radius: 40px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
-  backdrop-filter: blur(10px); /* 模糊效果 */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* 边框 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影 */
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
+<style scoped>
 #search-bar {
-  width:90%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 40px;
+}
+.search-option {
+  color: black;
 }
 #search-engine {
   border: none;
-  color: #e9edf5 !important;
+  color: white !important;
   cursor: pointer;
   background-color: transparent;
   outline: none;
@@ -107,12 +84,13 @@ export default {
   border: none !important;
   background-color: transparent;
   height: 40px;
-  color: #e9edf5 !important;
+  color: #000000 !important;
   min-width: 10px;
   padding: 0 10px;
   font-size: 14px;
   flex: 1;
   outline: none;
+  font-size: 1em;
 }
 #search-button {
   cursor: pointer;
@@ -128,7 +106,7 @@ export default {
   border-bottom-right-radius: 40px;
 }
 .icon-search {
-  color: #e9edf5 !important;
+  color: white !important;
   cursor: pointer;
 }
 </style>
