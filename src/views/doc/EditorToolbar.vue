@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { Icon } from '@iconify/vue'
+import Dialog from 'primevue/dialog'
+import Textarea from 'primevue/textarea';
 
+const visible = ref(false)
+const mdValue = ref('')
 const props = defineProps<{ editor: any }>()
 
 /* ===== 表格输入 ===== */
@@ -36,6 +40,21 @@ const tableCellColor = ref('#f5f5f5')
 /* ========= 是否在表格中 ========= */
 const inTable = computed(() => props.editor?.isActive('table'))
 
+const insertMarkdown = () => {
+  visible.value = true
+  mdValue.value = ''
+
+
+}
+watch(visible, () => {
+  if (!visible.value) {
+    console.log(mdValue.value);
+
+    if (!mdValue.value || !props.editor) return
+    props.editor.chain().focus().insertContent(mdValue.value, { contentType: 'markdown' }).run()
+  }
+})
+
 /* ========= 公式 ========= */
 
 const insertInlineMath = () => {
@@ -51,18 +70,19 @@ const insertBlockMath = () => {
 
   props.editor.chain().focus().insertBlockMath({ latex }).run()
 }
+
+
 </script>
 
 <template>
   <div class="toolbar">
+    <Dialog v-model:visible="visible" modal header="Edit Profile" :style="{ width: '25rem' }">
+      <Textarea v-model="mdValue" rows="5" cols="30" />
+    </Dialog>
     <details open>
       <summary>工具</summary>
       <div class="btns" style="margin-top: 10px">
-        <button
-          v-for="i in 6"
-          :key="i"
-          @click="run(() => editor.chain().focus().toggleHeading({ level: i }).run())"
-        >
+        <button v-for="i in 6" :key="i" @click="run(() => editor.chain().focus().toggleHeading({ level: i }).run())">
           H{{ i }}
         </button>
 
@@ -130,6 +150,8 @@ const insertBlockMath = () => {
           <Icon icon="mdi:format-align-justify" />
         </button>
 
+        <button @click="insertMarkdown">MD</button>
+
         <!-- ===== 数学公式 ===== -->
         <button @click="insertInlineMath">
           <Icon icon="mdi:function-variant" />
@@ -140,18 +162,11 @@ const insertBlockMath = () => {
         </button>
 
         <!-- ===== 字体颜色 ===== -->
-        <input
-          type="color"
-          v-model="textColor"
-          @change="run(() => editor.chain().focus().setColor(textColor).run())"
-        />
+        <input type="color" v-model="textColor" @change="run(() => editor.chain().focus().setColor(textColor).run())" />
 
         <!-- ===== 背景色 ===== -->
-        <input
-          type="color"
-          v-model="bgColor"
-          @change="run(() => editor.chain().focus().toggleHighlight({ color: bgColor }).run())"
-        />
+        <input type="color" v-model="bgColor"
+          @change="run(() => editor.chain().focus().toggleHighlight({ color: bgColor }).run())" />
         <!-- ===== 表格区域 ===== -->
 
         <template v-if="inTable">
@@ -172,15 +187,11 @@ const insertBlockMath = () => {
           </button>
 
           <!-- 单元格背景色 -->
-          <input
-            type="color"
-            v-model="tableCellColor"
-            @change="
-              run(() =>
-                editor.chain().focus().setCellAttribute('backgroundColor', tableCellColor).run(),
-              )
-            "
-          />
+          <input type="color" v-model="tableCellColor" @change="
+            run(() =>
+              editor.chain().focus().setCellAttribute('backgroundColor', tableCellColor).run(),
+            )
+            " />
         </template>
         <div class="btns">
           <input v-model.number="rows" />
@@ -217,6 +228,7 @@ details {
     flex-wrap: wrap;
     gap: 5px;
   }
+
   input {
     height: 32px;
     width: 32px;

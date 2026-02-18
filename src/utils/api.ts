@@ -4,7 +4,7 @@ import { generateId } from '@/utils/ulid'
 const userInfo = useUserStore()
 interface KvSetPayload {
   k: string
-  v: string
+  v: any
 }
 
 // 保存
@@ -31,12 +31,15 @@ export async function kvSet(payload: KvSetPayload) {
 }
 
 // 获取
-export async function kvGet(k: string) {
+export async function kvGet(k: string, flag: boolean = true) {
   if (!userInfo.userInfo?.userAccountId) {
     alert('请完善用户信息')
     return
   }
-  k = userInfo.userInfo.userAccountId + k
+
+  if (flag) {
+    k = userInfo.userInfo.userAccountId + k
+  }
 
   const res = await fetch(`${BASE_URL}/get`, {
     method: 'POST',
