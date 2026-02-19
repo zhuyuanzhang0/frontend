@@ -24,7 +24,7 @@ kvGet('asset_tracker_products_v').then((raw) => {
 
 
 
-const products = ref([])
+const products = ref<AssetItem[]>([])
 
 /* ===== 工具函数 ===== */
 
@@ -75,7 +75,24 @@ const sortOptions = [
     { label: '日均成本（高→低）', value: 'daily_desc' }
 ]
 
-const filteredList = computed(() => {
+interface AssetItem {
+    id: string
+    name: string
+    price: number
+    category: string
+    status: string
+    tags: string[]
+    purchaseDate: string
+    targetDaily?: number
+    imageUrl?: string
+    tagsText?: string
+    location?: string
+    expiryDate?: string
+    soldDate?: string
+    note?: string
+}
+
+const filteredList = computed<AssetItem[]>(() => {
     let list = products.value.filter(p => {
         if (p.price > maxPrice.value) return false
 
@@ -147,7 +164,25 @@ const todayDailyCost = computed(() => {
 
 const formVisible = ref(false)
 const editingId = ref<string | null>(null)
-const form = ref<any>({
+
+
+interface AssetForm {
+    name: string
+    price: number
+    category: string
+    status: string
+    purchaseDate: string
+    targetDaily?: number
+    imageUrl?: string
+
+    tagsText?: string
+    location?: string
+    expiryDate?: string
+    soldDate?: string
+    note?: string
+}
+
+const form = ref<AssetForm>({
     purchaseDate: '',
     category: '',
     name: '',
@@ -161,6 +196,7 @@ const form = ref<any>({
     soldDate: '',
     note: ''
 })
+
 
 function resetForm() {
     form.value = {
@@ -251,7 +287,9 @@ const preview = computed(() => {
     const dailyCost = form.value.price / days
 
     const goalActive = !!form.value.targetDaily
-    const totalDays = goalActive
+    console.log(goalActive, form.value.targetDaily);
+
+    const totalDays = (goalActive && form.value.targetDaily)
         ? Math.ceil(form.value.price / form.value.targetDaily)
         : 0
 
@@ -273,10 +311,11 @@ function fmtMoney(v: number) {
 }
 
 
-const map = {
+const map: Record<string, string> = {
     using: '使用中',
+    idle: '闲置',
+    sold: '已出售'
 }
-
 
 
 </script>
@@ -445,7 +484,7 @@ const map = {
 
                         <div class="imgPreview" v-if="form.imageUrl">
                             <div class="box">
-                                <img :src="form.imageUrl" @error="onImgError" />
+                                <img :src="form.imageUrl" />
                             </div>
                             <div class="txt">{{ form.imageUrl }}</div>
                         </div>
@@ -498,7 +537,7 @@ const map = {
                     <div style="font-size: 12px; color: rgba(0,0,0,.55); font-weight: 900">
                         预览：已使用 {{ preview.days }} 天 · 日均 ¥{{ fmtMoney(preview.dailyCost) }}/天
 
-                        <span v-if="preview.goalActive">
+                        <span v-if="preview.goalActive && preview.targetDaily">
                             · 目标 ¥{{ fmtMoney(preview.targetDaily) }}/天 ·
                             <span v-if="preview.goalReached">已达成 ✿</span>
                             <span v-else>还需 {{ preview.remaining }} 天</span>
@@ -556,6 +595,7 @@ const map = {
 
     .item {
         background: hsla(0, 0%, 100%, 0.2);
+
         .daily {
             font-size: 20px;
             font-weight: 950;
