@@ -23,6 +23,7 @@ import editor from './editor.vue'
   margin-right: 20px;
 }
 .tree-con {
+  min-width: max-content;
   height: 75vh;
   width: 20vw;
   /* background: hsla(0, 0%, 100%, 0.95); */

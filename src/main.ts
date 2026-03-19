@@ -8,6 +8,8 @@ import VueTippy from 'vue-tippy'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 
+import './style.css' 
+
 const app = createApp(App)
 
 const pinia = createPinia()
