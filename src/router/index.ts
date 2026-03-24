@@ -4,7 +4,6 @@ import { useUserStore } from '@/stores/user'
 const HomeView = () => import('../views/HomeView.vue')
 const LoginView = () => import('../views/LoginView.vue')
 const Test1 = () => import('../views/test1.vue')
-const choujiang = () => import('../views/choujiang.vue')
 
 
 const router = createRouter({
@@ -14,11 +13,7 @@ const router = createRouter({
       path: '/',
       redirect: '/home',
     },
-    {
-      path: '/choujiang',
-      name: 'choujiang',
-      component: choujiang,
-    },
+
     {
       path: '/home',
       name: 'home',
@@ -38,6 +33,14 @@ const router = createRouter({
     {
       path: '/assets',
       name: 'assets',
+      component: HomeView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/calendar',
+      name: 'calendar',
       component: HomeView,
       meta: {
         requiresAuth: true,

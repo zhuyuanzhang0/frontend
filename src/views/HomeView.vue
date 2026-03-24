@@ -4,6 +4,7 @@ import Setting from '@/views/setting/index.vue'
 import Doc from '@/views/doc/index.vue'
 import Assets from '@/views/assets/index.vue'
 import Dock from '@/components/dock.vue'
+import Calendar from '@/views/calendar/index.vue'
 
 import { ref, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
@@ -23,6 +24,7 @@ const componentMap = {
   setting: Setting,
   doc: Doc,
   assets: Assets,
+  calendar: Calendar,
 }
 const actived = ref<keyof typeof componentMap>('home')
 </script>

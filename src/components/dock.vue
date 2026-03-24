@@ -8,7 +8,7 @@ const tabs = [
   { key: 'home', label: '首页', icon: 'material-symbols:home-rounded' },
   { key: 'doc', label: '文档', icon: 'lets-icons:file-dock-fill' },
   { key: 'assets', label: '资产', icon: 'clarity:resource-pool-solid-badged' },
-  //   { key: 'calendar', label: '日历', icon: 'tabler:calendar-filled' },
+  { key: 'calendar', label: '日历', icon: 'tabler:calendar-filled' }, 
   //   { key: 'resume', label: '简历', icon: 'mdi:resume' },
   { key: 'setting', label: '设置', icon: 'ant-design:setting-filled' },
   //   { key: 'profile', label: '账户', icon: 'iconamoon:profile-fill' },
