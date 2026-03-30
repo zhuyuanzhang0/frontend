@@ -82,7 +82,9 @@ const insertBlockMath = () => {
     <details open>
       <summary>工具</summary>
       <div class="btns" style="margin-top: 10px">
-        <button v-for="i in 6" :key="i" @click="run(() => editor.chain().focus().toggleHeading({ level: i }).run())">
+        <button v-for="i in 6" :key="i" @click="run(() => editor.chain().focus().toggleHeading({ level: i }).run())"
+          style="font: 0.7em sans-serif;font-weight: bold;"
+          >
           H{{ i }}
         </button>
 

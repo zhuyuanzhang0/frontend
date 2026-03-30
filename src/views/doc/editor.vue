@@ -1,7 +1,7 @@
 <template>
   <div class="col-group">
     <div class="main">
-      <editor-content :editor="editor" class="editor" v-if="route.query.docId" />
+      <editor-content :editor="editor" class="editor tiptap" v-if="route.query.docId" />
       <div class="editor" v-else>请选择文档</div>
     </div>
     <div class="sidebar" v-if="route.query.docId">
@@ -670,6 +670,11 @@ async function uploadAndInsert(editor, file) {
   &.resize-cursor {
     cursor: ew-resize;
     cursor: col-resize;
+  }
+
+  h1 {
+    font-size: 2em;
+    font-weight: bold;
   }
 }
 .col-group {
